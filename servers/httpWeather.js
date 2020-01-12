@@ -5,7 +5,7 @@ var express = require('express'),
 const util = require('util');
 
 var app = express();
-var useless;
+
 // Templating engine json
 app.engine('json', cons.handlebars);
 app.set('view engine', 'json');
