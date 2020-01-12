@@ -1,0 +1,149 @@
+{
+  "@context": {
+    "sch": "http://schema.org/",
+    "dbo": "http://dbpedia.org/ontology/",
+    "dbp": "http://dbpedia.org/page/",
+    "dbpr": "http://dbpedia.org/property/"
+  },
+  "sch:version": "3.0.0",
+  "dbp:Software_feature": {
+    "sch:name": "{{req.model.name}}",
+    "sch:version": "{{req.model.version}}"
+  },
+  "dbp:Web_server": [
+    {
+      "sch:url": "{{req.model.id}}"
+    }
+  ],
+  "dbpr:path": {
+    {{#each req.model.paths}}
+    "{{@key}}": {
+      {{#if this.httpMethods.get}}
+      "dbp:GET_(HTTP)": {
+        "sch:disambiguatingDescription": "{{this.httpMethods.get.summary}}",
+        {{#if this.httpMethods.get.semanticValue}}
+        "sch:valueName": "http://dbpedia.org/page/{{this.httpMethods.get.semanticValue}}",
+          {{#if this.httpMethods.get.unitCode}}
+          "sch:unitCode": "{{this.unitCode}}",
+          {{/if}}
+          {{#if this.httpMethods.get.DataType}}
+          "sch:DataType": "{{this.DataType}}",
+          {{/if}}
+        {{/if}}
+        {{#if this.httpMethods.get.parameter}}
+        "dbp:Parameter_(computer_programming)": [
+          {{#each this.httpMethods.get.parameter}}
+          {
+            "sch:name": "{{this.name}}",
+            "dbo:type": "{{this.category}}",
+            "sch:valueRequired": {{this.required}},
+            "sch:description": "{{this.description}}",
+            "dbp:Structure": {
+              "dbp:Data_type": "{{this.type}}",
+              {{#if this.format}}
+              "dbo:format": "{{this.format}}",
+              {{/if}}
+              "sch:minValue": {{this.minimum}}
+            }
+          {{#if @last}}
+          }
+          {{else}}
+          },
+          {{/if}}
+          {{/each}}
+        ],
+        {{/if}}
+        "dbp:Response": {
+          {{#each this.httpMethods.get.responses}}
+          "dbp:HTTP_{{@key}}": {
+            {{#if this.content}}
+            "sch:description": "{{this.description}}",
+            "dbp:Web_content": {
+              {{#each this.content}}
+              "dbp:{{@key}}": {
+                "dbp:Structure": {
+                  "dbp:Data_type": "{{this.type}}"
+                }
+              {{#if @last}}
+              }
+              {{else}}
+              },
+              {{/if}}
+              {{/each}}
+            }
+            {{else}}
+            "sch:description": "{{this.description}}"
+            {{/if}}
+          {{#if @last}}
+          }
+          {{else}}
+          },
+          {{/if}}
+          {{/each}}
+        }
+      {{/if}}
+      {{#if this.httpMethods.post}}
+      {{#if this.httpMethods.get}}
+      },
+      {{/if}}
+      "dbp:POST_(HTTP)": {
+        "sch:disambiguatingDescription": "{{this.httpMethods.post.summary}}",
+        "dbp:HTTP_message_body": {
+          "sch:valueRequired": {{this.httpMethods.post.body.required}},
+          "dbp:Web_content": {
+            "dbp:JSON": {
+              "dbp:Structure": {
+                "dbp:Data_type": "{{this.httpMethods.post.body.type}}",
+                "dbp:Property": {
+                  {{#each this.httpMethods.post.body.property}}
+                  "{{@key}}": {
+                    "dbp:Data_type": "{{this.type}}"
+                  {{#if @last}}
+                  }
+                  {{else}}
+                  },
+                  {{/if}}
+                  {{/each}}
+                }
+              }
+            }
+          }
+        },
+        "dbp:Response": {
+          {{#each this.httpMethods.post.responses}}
+          "dbp:HTTP_{{@key}}": {
+            {{#if this.content}}
+            "sch:description": "{{this.description}}",
+            "dbp:Web_content": {
+              {{#each this.content}}
+              "dbp:{{@key}}": {
+                "dbp:Structure": {
+                  "dbp:Data_type": "{{this.type}}"
+                }
+              }
+              {{/each}}
+            }
+            {{else}}
+            "sch:description": "{{this.description}}"
+            {{/if}}
+          {{#if @last}}
+          }
+          {{else}}
+          },
+          {{/if}}
+          {{/each}}
+        }
+      }
+      {{else}}
+      {{#if this.httpMethods.get}}
+      }
+      {{/if}}
+      {{/if}}
+    {{#if @last}}
+    }
+    {{else}}
+    },
+    {{/if}}
+    {{/each}}
+  }
+}

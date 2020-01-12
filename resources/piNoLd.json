@@ -1,0 +1,503 @@
+{
+  "id": "http://localhost:8484",
+  "name": "My WoT Raspberry PI",
+  "description": "A WoT-connected Raspberry Pi, using a PIR sensor and a virtual lock.",
+  "productID": "asin:B00T2U7R7I",
+  "manufacturer": "Raspberry Pi",
+  "model": "100437",
+  "image": "http://devices.webofthings.io:9090/snapshot.cgi?user=snapshots&pwd=4MXfTSr0gH",
+  "version": "1.0.0",
+  "tags": [
+    "raspberry",
+    "pi",
+    "WoT"
+  ],
+  "customFields": {
+    "hostname": "localhost",
+    "port": 8484,
+    "secure": false,
+    "dataArraySize": 30
+  },
+  "links": {
+    "product": {
+      "link": "https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/",
+      "title": "Product this Web Thing is based on"
+    },
+    "properties": {
+      "link": "/properties",
+      "title": "List of Properties",
+      "resources": {
+        "temperature": {
+          "name": "Temperature Sensor",
+          "description": "An ambient temperature sensor.",
+          "values": {
+            "t": {
+              "name": "Temperature sensor",
+              "description": "The temperature in celsius",
+              "unit": "celsius",
+              "customFields": {
+                "gpio": 12
+              }
+            }
+          },
+          "tags": [
+            "sensor",
+            "public",
+            "indoors"
+          ]
+        },
+        "humidity": {
+          "name": "Humidity Sensor",
+          "description": "An ambient humidity sensor.",
+          "values": {
+            "h": {
+              "name": "Humidity",
+              "description": "Percentage of Humidity",
+              "unit": "%",
+              "customFields": {
+                "gpio": 12
+              }
+            }
+          },
+          "tags": [
+            "sensor",
+            "public"
+          ]
+        },
+        "pir": {
+          "name": "Passive Infrared",
+          "description": "A passive infrared sensor.",
+          "values": {
+            "presence": {
+              "name": "Presence",
+              "description": "Current sensor value (true=motion detected)",
+              "type": "boolean",
+              "customFields": {
+                "gpio": 17
+              }
+            }
+          },
+          "tags": [
+            "sensor",
+            "public"
+          ]
+        },
+        "lock": {
+          "name": "Virtual Lock",
+          "description": "A sensor that emulates a lock.",
+          "values": {
+            "locked": {
+              "name": "locked",
+              "description": "Current sensor value (true=door locked)",
+              "type": "boolean",
+              "customFields": {
+                "gpio": 24
+              }
+            }
+          },
+          "tags": [
+            "sensor",
+            "public"
+          ]
+        },
+        "airpressure": {
+          "name": "Air Pressure sensor",
+          "description": "An ambient air pressure sensor",
+          "values": {
+            "a": {
+              "name": "Air Pressure",
+              "description": "Air pressure in hectopascal",
+              "unit": "hPa",
+              "customFields": {
+                "gpio": 32
+              }
+            }
+          },
+          "tags": [
+            "sensor",
+            "public"
+          ]
+        },
+        "led": {
+          "name": "LED",
+          "description": "The LED of this device.",
+          "values": {
+            "1": {
+              "name": "LED 1",
+              "customFields": {
+                "gpio": 4
+              }
+            }
+          },
+          "tags": [
+            "sensor",
+            "public"
+          ]
+        }
+      }
+    },
+    "actions": {
+      "link": "/actions",
+      "title": "Actions of this Web Thing",
+      "resources": {
+        "ledState": {
+          "name": "Change LED state",
+          "description": "Change the state of the LED",
+          "prop": "led",
+          "values": {
+            "ledId": {
+              "type": "enum",
+              "enum": {
+                "1": "LED 1"
+              },
+              "required": true
+            },
+            "state": {
+              "type": "boolean",
+              "required": true
+            }
+          }
+        }
+      }
+    },
+    "type": {
+      "link": "http://model.webofthings.io/",
+      "title": "Instance type of the Pi"
+    },
+    "help": {
+      "link": "http://webofthings.org/docs/pi/",
+      "title": "Documentation"
+    },
+    "ui": {
+      "link": "/",
+      "title": "User Interface"
+    }
+  },
+  "paths": {
+    "/": {
+      "httpMethods": {
+        "get": {
+          "summary": "Gets the root of the device",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties": {
+      "httpMethods": {
+        "get": {
+          "summary": "Gets properties of the device",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties/temperature": {
+      "httpMethods": {
+        "get": {
+          "summary": "Return the temperature of the room",
+          "semanticValue": "Temperature",
+          "unitCode": "CEL",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties/humidity": {
+      "httpMethods": {
+        "get": {
+          "summary": "Return the percentage of humidity in the room",
+          "semanticValue": "Humidity",
+          "unitCode": "P1",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties/pir": {
+      "httpMethods": {
+        "get": {
+          "summary": "Return sensor values that indicate if someone presence in the room",
+          "semanticValue": "Passive_infrared_sensor",
+          "DataType": "boolean",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties/lock": {
+      "httpMethods": {
+        "get": {
+          "summary": "Return sensor values that indicate if the door is locked",
+          "semanticValue": "Lock_(security_device)",
+          "DataType": "boolean",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties/airpressure": {
+      "httpMethods": {
+        "get": {
+          "summary": "Return the air pressure of the room",
+          "semanticValue": "Atmospheric_pressure",
+          "unitCode": "A97",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties/led": {
+      "httpMethods": {
+        "get": {
+          "summary": "Return the status of the led",
+          "semanticValue": "Light-emitting_diode",
+          "DataType": "boolean",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/model": {
+      "httpMethods": {
+        "get": {
+          "summary": "Return the JSON representation of the model",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actions": {
+      "httpMethods": {
+        "get": {
+          "summary": "Return the actions available for this device",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actions/ledState": {
+      "httpMethods": {
+        "get": {
+          "summary": "Return the status of the led",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Change the state of the led",
+          "body": {
+            "required": true,
+            "type": "object",
+            "property": {
+              "ledId": {
+                "type": "integer"
+              },
+              "state": {
+                "type": "boolean"
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "created"
+            },
+            "400": {
+              "description": "bad request"
+            }
+          }
+        }
+      }
+    },
+    "/actions/ledState/{actionId}": {
+      "httpMethods": {
+        "get": {
+          "summary": "Return the status of POST request identified by actionId",
+          "parameter": [
+            {
+            "name": "actionId",
+            "category": "path",
+            "required": true,
+            "description": "The action Id returned after POST operation",
+            "type": "string",
+            "format": "uuid",
+            "minimum": 1
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                },
+                "HTML": {
+                  "type": "object"
+                },
+                "MessagePack": {
+                  "type": "object"
+                }
+              }
+            },
+            "204": {
+              "description": "no content"
+            }
+          }
+        }
+      }
+    }
+  }
+}

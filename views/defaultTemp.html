@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Temperature</title>
+    <style>
+        body h1 {
+            margin: 0;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+         fieldset {
+
+            min-width: 0;
+            max-width: 20%;
+            width: 20%;
+         }
+    </style>
+</head>
+<body>
+    <h1 style="color:black;font-size:60px;text-align:center;background-color:purple;font-family:'Javanese Text'">Temperature</h1>
+    <fieldset style="border: 2px double green"><legend style="color:firebrick; font-family:Trattatello;font-size:20px;"><strong>Temperature in Milan</strong></legend> {{req.val_weather}} {{req.unit_weather}}</fieldset>
+    <br />
+    <br />
+    <fieldset style="border: 2px double green"><legend style="color: firebrick; font-family:Trattatello;font-size:20px;"><strong>Temperature inside the room</strong></legend> {{req.val_wot}} {{req.unit_wot}}</fieldset>
+    <br />
+    <br />
+    <fieldset style="border: 2px double green"><legend style="color: firebrick; font-family:Trattatello;font-size:20px;"><strong>Difference</strong></legend> {{req.difference}} {{req.unit_wot}}</fieldset>
+</body>
+</html>

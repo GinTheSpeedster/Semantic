@@ -1,0 +1,94 @@
+{
+  "@context":
+  [
+    "http://schema.org/",
+    {"dbo": "http://dbpedia.org/ontology/"},
+    {"dbp": "http://dbpedia.org/page/"}
+  ],
+  "@id": "{{req.model.id}}",
+  "name": "{{req.model.name}}",
+  "description": "{{req.model.description}}",
+  "productID" : "{{req.model.productID}}",
+  "manufacturer" : "{{req.model.manufacturer}}",
+  "model" : "{{req.model.model}}",
+  "image" : "{{req.model.image}}",
+  "dbo:tag": [
+    {{#each req.model.tags}}
+      {{#if @last}}
+        "{{this}}"
+      {{else}}
+        "{{this}}",
+      {{/if}}
+    {{/each}}
+  ],
+  "dbo:field": {
+    "dbp:Hostname": "{{req.model.customFields.hostname}}",
+    "dbp:Port_(computer_networking)": "{{req.model.customFields.port}}",
+    "dbp:Secure_end_node": "{{req.model.customFields.secure}}",
+    "numberOfItems": "{{req.model.customFields.dataArraySize}}"
+  },
+  "WebAPI": {
+    "isRelatedTo": {
+      "@type": "Product",
+      "url": "{{req.model.links.product.link}}",
+      "description": "{{req.model.links.product.title}}"
+    },
+    "serviceOutput": {
+      "url": "http://localhost:8484/properties",
+      "name": "List of Properties",
+      "produces": {
+        {{#each req.model.links.properties.resources}}
+          "dbp:{{this.semanticName}}": {
+            "name": "{{this.name}}",
+            "description": "{{this.description}}",
+            "QuantitativeValues": {
+              {{#each this.values}}
+                "name": "{{this.name}}",
+                "description": "{{this.description}}",
+                {{#if this.unit}}
+                  "unitCode:": "{{this.unitCode}}"
+                {{else}}
+                  "DataType": "{{this.type}}"
+                {{/if}}
+              {{/each}}
+            },
+            "dbp:tag": [
+              {{#each this.tags}}
+                {{#if @last}}
+                  "{{this}}"
+                {{else}}
+                  "{{this}}",
+                {{/if}}
+              {{/each}}
+            ]
+          {{#if @last}}
+            }
+          {{else}}
+            },
+          {{/if}}
+        {{/each}}
+      }
+    },
+	"action": {
+	  "url": "http://localhost:8484/actions",
+	  "name": "Actions of this Web Thing",
+      "produces": {
+      },
+      "description": "We don't need Actions in this example"
+    },
+    "WebPage":[
+      {
+        "url": "{{req.model.links.type.link}}",
+        "name": "{{req.model.links.type.title}}"
+      },
+      {
+        "url": "{{req.model.links.help.link}}",
+        "name": "{{req.model.links.help.title}}"
+      },
+      {
+        "url": "{{req.model.links.ui.link}}",
+        "name": "{{req.model.links.ui.title}}"
+      }
+    ]
+  }
+}

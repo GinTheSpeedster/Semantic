@@ -1,0 +1,69 @@
+{
+  "name": "Converter",
+  "versione": "1.0.0",
+  "id": "http://localhost:8100",
+  "paths": {
+    "/": {
+      "httpMethods": {
+        "get": {
+          "summary": "Gets OpenApi description of the API",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/temperature": {
+      "httpMethods": {
+        "get": {
+          "summary": "Gets converted value",
+          "semanticValue": "Conversion_of_units",
+          "parameter": [
+            {
+              "name": "from",
+              "category": "path",
+              "required": true,
+              "description": "The initial unit of measurment",
+              "type": "string",
+              "minimum": 1
+            },
+            {
+              "name": "to",
+              "category": "path",
+              "required": true,
+              "description": "The final unit of measurment",
+              "type": "string",
+              "minimum": 1
+            },
+            {
+              "name": "value",
+              "category": "path",
+              "required": true,
+              "description": "The value that has to be converted",
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "JSON": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

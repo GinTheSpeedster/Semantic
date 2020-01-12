@@ -1,0 +1,134 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "{{req.model.name}}",
+    "version": "{{req.model.version}}"
+  },
+  "servers": [
+    {
+      "url": "{{req.model.id}}"
+    }
+  ],
+  "paths": {
+    {{#each req.model.paths}}
+    "{{@key}}": {
+      {{#if this.httpMethods.get}}
+      "get": {
+        "summary": "{{this.httpMethods.get.summary}}",
+        {{#if this.httpMethods.get.parameter}}
+        "parameters": [
+          {
+            "name": "{{this.httpMethods.get.parameter.name}}",
+            "in": "{{this.httpMethods.get.parameter.category}}",
+            "required": {{this.httpMethods.get.parameter.required}},
+            "description": "{{this.httpMethods.get.parameter.description}}",
+            "schema": {
+              "type": "{{this.httpMethods.get.parameter.type}}",
+              "format": "{{this.httpMethods.get.parameter.format}}",
+              "minimum": {{this.httpMethods.get.parameter.minimum}}
+            }
+          }
+        ],
+        {{/if}}
+        "responses": {
+          {{#each this.httpMethods.get.responses}}
+          "{{@key}}": {
+            {{#if this.content}}
+            "description": "{{this.description}}",
+            "content": {
+              {{#each this.content}}
+              {{#ifcond @key '==' 'JSON'}}
+              "application/json": {
+              {{/ifcond}}
+              {{#ifcond @key '==' 'HTML'}}
+              "text/html": {
+              {{/ifcond}}
+              {{#ifcond @key '==' 'MessagePack'}}
+              "application/msgpack": {
+              {{/ifcond}}
+                "schema": {
+                  "type": "{{this.type}}"
+                }
+              {{#if @last}}
+              }
+              {{else}}
+              },
+              {{/if}}
+              {{/each}}
+            }
+            {{else}}
+            "description": "{{this.description}}"
+            {{/if}}
+          {{#if @last}}
+          }
+          {{else}}
+          },
+          {{/if}}
+          {{/each}}
+        }
+      {{/if}}
+      {{#if this.httpMethods.post}}
+      {{#if this.httpMethods.get}}
+      },
+      {{/if}}
+      "post": {
+        "summary": "{{this.httpMethods.post.summary}}",
+        "requestBody": {
+          "required": {{this.httpMethods.post.body.required}},
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "{{this.httpMethods.post.body.type}}",
+                "properties": {
+                  {{#each this.httpMethods.post.body.property}}
+                  "{{@key}}": {
+                    "type": "{{this.type}}"
+                  {{#if @last}}
+                  }
+                  {{else}}
+                  },
+                  {{/if}}
+                  {{/each}}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          {{#each this.httpMethods.post.responses}}
+          "{{@key}}": {
+            {{#if this.content}}
+            "description": "{{this.description}}",
+            "content": {
+              {{#each this.content}}
+              "{{@key}}": {
+                "schema": {
+                  "type": "{{this.type}}"
+                }
+              }
+              {{/each}}
+            }
+            {{else}}
+            "description": "{{this.description}}"
+            {{/if}}
+          {{#if @last}}
+          }
+          {{else}}
+          },
+          {{/if}}
+          {{/each}}
+        }
+      }
+      {{else}}
+      {{#if this.httpMethods.get}}
+      }
+      {{/if}}
+      {{/if}}
+    {{#if @last}}
+    }
+    {{else}}
+    },
+    {{/if}}
+    {{/each}}
+  }
+}

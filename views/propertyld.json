@@ -1,0 +1,6 @@
+{
+  "name": "{{req.entityId}}",
+  "description": "{{req.propertyModel.description}}",
+  "value": {{req.value}},
+  "unitCode": "{{req.unit}}"
+}
