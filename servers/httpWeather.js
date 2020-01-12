@@ -3,9 +3,9 @@ var express = require('express'),
     model = require('./../resources/weatherConf'),
     cons = require('consolidate');
 const util = require('util');
-//
-var app = express();
 
+var app = express();
+var useless;
 // Templating engine json
 app.engine('json', cons.handlebars);
 app.set('view engine', 'json');
