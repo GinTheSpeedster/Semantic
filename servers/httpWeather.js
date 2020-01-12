@@ -3,7 +3,7 @@ var express = require('express'),
     model = require('./../resources/weatherConf'),
     cons = require('consolidate');
 const util = require('util');
-
+//
 var app = express();
 
 // Templating engine json
