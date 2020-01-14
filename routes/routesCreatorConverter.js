@@ -30,11 +30,14 @@ function createRootRoute() {
     router.route('/temperature/:from/:to/:value').get(function(req,res,next){
         confrontation(req.params.from, function(from){
             confrontation(req.params.to, function(to){
+                var tmp_options_path = options.path;
                 options.path += '?from=' + from;
                 options.path += '&to=' + to;
                 options.path += '&value=' + req.params.value;
                 options.path += '&decimal=' + 2;
+                console.log(options);
                 full_get(options, function(object){
+                    options.path = tmp_options_path;
                     req.obj = object;
                     next();
                 });
