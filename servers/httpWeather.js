@@ -32,7 +32,7 @@ app.get('/', function(req, res){
     count++;
     console.log('Count: ' + count);
     if(count == 1) {
-        /*
+
         http.get(options, function (response) {
             var result = '';
             response.on('data', function (chunk) {
@@ -41,8 +41,8 @@ app.get('/', function(req, res){
 
             response.on('end', function () {
                 var obj = JSON.parse(result);
-                temp_ld.value = obj.main.temp;*/
-                temp_ld.value = 10;
+                temp_ld.value = obj.main.temp;
+                //temp_ld.value = 10;
                 if (req.accepts('application/json')) {
                     res.setHeader('Content-Type', 'application/ld+json');
                     res.end(JSON.stringify(temp_ld));
@@ -50,11 +50,11 @@ app.get('/', function(req, res){
                 else {
                     req.model = model;
                     res.render('semanticOpenApiTemplate.json', {req: req});
-                }/*
+                }
             });
         }).on('error', function (err) {
             console.log("Error: " + err.message);
-        });*/
+        });
     }
     else if(count == 10){
         count = 0;
